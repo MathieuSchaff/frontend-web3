@@ -11,6 +11,7 @@ interface WalletState {
 }
 
 interface MetaMaskContextData {
+  provider?: any
   wallet: WalletState
   hasProvider: boolean | null
   error: boolean
@@ -25,6 +26,7 @@ const disconnectedState: WalletState = { accounts: [], balance: '', chainId: '' 
 const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContextData)
 
 export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
+  // const [provider, setProvider] = useState<any>(null)
   const [hasProvider, setHasProvider] = useState<boolean | null>(null)
 
   const [isConnecting, setIsConnecting] = useState(false)
@@ -67,6 +69,7 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     const getProvider = async () => {
       const provider = await detectEthereumProvider({ silent: true })
+      // setProvider(provider)
       setHasProvider(Boolean(provider))
 
       if (provider) {
@@ -112,6 +115,7 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
         isConnecting,
         connectMetaMask,
         clearError,
+        // provider,
       }}
     >
       {children}
